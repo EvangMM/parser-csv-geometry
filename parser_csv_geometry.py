@@ -11,10 +11,11 @@ def parser_type(string):
     of the input string
     
     Args:
-        string : str, a string like 'POINT (10.2 5.1)'
+        string (str): a string like 'POINT (10.2 5.1)'
             or 'POLYGON ((10.2 5.1, 11.5 2.5, 5.6 8.5))'
     Return
-        shapely.geometry object, a transformed list of coordinates
+        shapely.geometry: a transformed list of coordinates
+        
     """   
     
     match = re.match(r"(\w*)(\s)", string)
@@ -59,9 +60,10 @@ def parser_geometry(string):
     Function that parse the geometry string and return a list
     
     Args:
-        string : str, a geometry string
+        string (str): a geometry string
     Return:
-        list, a list of float coordinates
+        list: a list of float coordinates
+        
     """
 
     #Strip string part: e.g. "(43.21 18.23, 43.21 18.23)" -> "43.21,18.23,,43.21 18.23"
