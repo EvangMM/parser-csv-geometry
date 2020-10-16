@@ -1,6 +1,6 @@
 # parser-csv-geometry
 
-Parse string like 'POINT (10.2 5.1)' or 'POLYGON ((10.2 5.1, 11.5 2.5, 5.6 8.5)) from exported csv in shapely.geometry instances.
+Parses string like 'POINT (10.2 5.1)' or 'POLYGON ((10.2 5.1, 11.5 2.5, 5.6 8.5)) from exported csv in *shapely.geometry* instances.
 
 ### Usage
 
@@ -18,4 +18,4 @@ print(type(y))
 
 ### Requirements
 
-It requires Shapely==1.7.0
+It requires *Shapely==1.7.0*.
