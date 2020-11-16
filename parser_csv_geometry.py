@@ -2,8 +2,11 @@ import re
 
 from shapely.geometry import (
             LineString, Point, Polygon, 
-            MultiPoint, MultiLineString, MultiPolygon)
+            MultiPoint, MultiLineString, MultiPolygon,
+            GeometryCollection)
 
+GROUP1_GEOMCOLLECTION = r"GEOMETRYCOLLECTION \((.+)\)"
+GROUP2_GEOMCOLLECTION = r"((MULTI)?(POINT|LINESTRING|POLYGON)\s?\({1,3}[^()]*\){1,3})"
 
 def parser_type(string):
     """
@@ -18,21 +21,19 @@ def parser_type(string):
         
     """   
     
-    match = re.match(r"(\w*)(\s)", string)
+    multi = False
+    mfunc = None
+    collection = False
+    
+    match = re.match(r"(\w*)(\s?)", string)
     name = match.group(1)
     
     if name == "POINT":
         func = Point
-        mfunc = None
-        multi = False
     elif name == "LINESTRING":
         func = LineString
-        mfunc = None
-        multi = False
     elif name == "POLYGON":
         func = Polygon
-        mfunc = None
-        multi = False
     elif name == "MULTIPOINT":
         func = Point
         mfunc = MultiPoint
@@ -45,10 +46,19 @@ def parser_type(string):
         func = Polygon
         mfunc = MultiPolygon
         multi = True
+    elif name == "GEOMETRYCOLLECTION":
+        func = GeometryCollection
+        collection = True
     
     new_string = string.replace(match.group(0),"")
     
-    if multi:
+    if collection:
+        match_collection = re.match(GROUP1_GEOMCOLLECTION,string)
+        group1_GEOMCOLLGROUP1_GEOMCOLLECTION = match_collection.group(1)
+        occurrences = re.findall(GROUP2_GEOMCOLLECTION,group1_GEOMCOLLGROUP1_GEOMCOLLECTION)
+        list_geometries = list(map(lambda x: x[0],occurrences))
+        return func([parser_type(geom) for geom in list_geometries])
+    elif multi:
         substring = new_string.split("), (")
         return mfunc([func(parser_geometry(sub)) for sub in substring])
     else:
