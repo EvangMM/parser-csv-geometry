@@ -10,7 +10,7 @@ print(type(x))
 
 >>> <class 'str'>
 
-y = parser_type(x)
+y = parse_geometry(x)
 print(type(y))
 
 >>> <class 'shapely.geometry.point.Point'>
