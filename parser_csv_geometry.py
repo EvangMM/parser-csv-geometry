@@ -1,5 +1,5 @@
 """
-Parser for string WKT geomerties.
+Parser for string WKT geometries.
 """
 
 import re
