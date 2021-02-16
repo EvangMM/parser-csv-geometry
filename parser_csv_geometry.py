@@ -1,3 +1,7 @@
+"""
+Parser for string WKT geomerties.
+"""
+
 import re
 from typing import List, Tuple, TypeVar, Union
 
@@ -49,8 +53,7 @@ def parse_fnc(string: str) -> Tuple[str,
         else:
             raise Exception("No valid object")
         return coords, fnc, mfnc
-    else:
-        raise Exception("No match in parse_func")
+    raise Exception("No match in parse_func")
 
 
 def fnc_rebuild(string: str, fnc: SimpleGeometry,
@@ -61,8 +64,7 @@ def fnc_rebuild(string: str, fnc: SimpleGeometry,
     if mfnc:
         substring = string.split("), (")
         return mfnc([fnc(parse_coords(sub)) for sub in substring])
-    else:
-        return fnc(parse_coords(string))
+    return fnc(parse_coords(string))
 
 
 def parse_coords(string: str) -> Union[List[float],
@@ -87,8 +89,7 @@ def parse_coords(string: str) -> Union[List[float],
     # convert string in float: ["43.21","18.23"] -> [43.21,18.23]
     if len(string_coords) > 1:
         return [list(map(float, point)) for point in string_coords]
-    else:
-        return list(map(float, string_coords[0]))
+    return list(map(float, string_coords[0]))
 
 
 def parse_geometry(string: str) -> Union[GeometryCollection,
@@ -103,5 +104,4 @@ def parse_geometry(string: str) -> Union[GeometryCollection,
         list_geometries = list(map(lambda x: x[0], occurrences))
         coll = [fnc_rebuild(*parse_fnc(geom)) for geom in list_geometries]
         return GeometryCollection(coll)
-    else:
-        return fnc_rebuild(*parse_fnc(string))
+    return fnc_rebuild(*parse_fnc(string))
